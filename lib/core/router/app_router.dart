@@ -5,6 +5,9 @@ import 'package:go_router/go_router.dart';
 import '../../features/auth/auth_providers.dart';
 import '../../features/auth/auth_screen.dart';
 import '../../features/dashboard/dashboard_screen.dart';
+import '../../features/interview/interview_screen.dart';
+import '../../features/interview/results_screen.dart';
+import '../../features/interview/room_screen.dart';
 import '../../features/onboarding/onboarding_screen.dart';
 import '../../features/profile/profile_controller.dart';
 import '../../features/profile/profile_screen.dart';
@@ -23,6 +26,9 @@ abstract final class Routes {
   static const resume = '/resume';
   static const roadmap = '/roadmap';
   static const profile = '/profile';
+  // Full-screen routes (outside the tab shell). Append "/<interviewId>".
+  static const room = '/room';
+  static const results = '/results';
 }
 
 Page<void> _fade(GoRouterState state, Widget child) => CustomTransitionPage<void>(
@@ -88,18 +94,21 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: Routes.setup,
         pageBuilder: (c, s) => _fade(s, const ProfileSetupScreen()),
       ),
+      GoRoute(
+        path: '${Routes.room}/:id',
+        pageBuilder: (c, s) =>
+            _fade(s, RoomScreen(interviewId: s.pathParameters['id']!)),
+      ),
+      GoRoute(
+        path: '${Routes.results}/:id',
+        pageBuilder: (c, s) =>
+            _fade(s, ResultsScreen(interviewId: s.pathParameters['id']!)),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, shell) => AppShell(shell: shell),
         branches: [
           _branch(Routes.home, const DashboardScreen()),
-          _branch(
-            Routes.interview,
-            const PlaceholderScreen(
-              title: 'Mock interview',
-              icon: Icons.mic_rounded,
-              phase: 'Phase 3 (text) and Phase 4 (voice)',
-            ),
-          ),
+          _branch(Routes.interview, const InterviewScreen()),
           _branch(
             Routes.resume,
             const PlaceholderScreen(
