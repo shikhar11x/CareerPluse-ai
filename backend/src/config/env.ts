@@ -1,5 +1,10 @@
-import { config } from 'dotenv';
+import path from 'node:path';
+
+import dotenv from 'dotenv';
 import { z } from 'zod';
+
+// Always load backend/.env, regardless of the folder the command runs from.
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 const schema = z.object({
   PORT: z.coerce.number().default(4000),
