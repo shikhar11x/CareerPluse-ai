@@ -11,8 +11,10 @@ const schema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   SUPABASE_URL: z.string().url(),
   SUPABASE_ANON_KEY: z.string().min(1),
-  // Needed from Phase 3 onwards.
+  // Google AI Studio key. Server-side only.
   AI_API_KEY: z.string().optional(),
+  // Model IDs change often, so this is configurable (check AI Studio for the current list).
+  GEMINI_MODEL: z.string().min(1).default('gemini-3.8-flash'),
 });
 
 const parsed = schema.safeParse(process.env);

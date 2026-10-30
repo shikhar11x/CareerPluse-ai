@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import { ZodError } from 'zod';
 
 import { HttpError } from './middleware/errors';
+import { interviewRoutes, progressRoutes } from './routes/interview.routes';
 import { profileRoutes } from './routes/profile.routes';
 
 export const app = express();
@@ -26,6 +27,8 @@ app.get('/api/v1/health', (_req: Request, res: Response) => {
 });
 
 app.use('/api/v1/profile', profileRoutes);
+app.use('/api/v1/interviews', interviewRoutes);
+app.use('/api/v1/progress', progressRoutes);
 
 // Every failure uses one shape: { error: { code, message } }
 app.use((_req: Request, res: Response) => {
